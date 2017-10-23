@@ -1,5 +1,7 @@
 ﻿using System;
+using Refactoring.Config;
 using Refactoring.Services;
+using SimpleInjector;
 
 namespace Refactoring
 {
@@ -7,6 +9,11 @@ namespace Refactoring
     {
         static void Main(string[] args)
         {
+            var container = new Container();
+            var bootstrapper = new Bootstrapper(container);
+            bootstrapper.Register();
+
+
             Console.WriteLine(" -------------------------------------------------------------------------- ");
             Console.WriteLine("| Greetings and salutations fellow developer :D                            |");
             Console.WriteLine("|                                                                          |");
@@ -19,13 +26,14 @@ namespace Refactoring
             Console.WriteLine("|                                                               Good luck! |");
             Console.WriteLine(" --------------------------------------------------------------------------");
 
-            var commandOperations = new CommandOperations();
+            var commandOperations = container.GetInstance<ICommandOperations>();
+
             commandOperations.ShowCommands();
 
             do
             {
                 commandOperations.ReadString(Console.ReadLine());
-            } while (commandOperations.keepProcess);
+            } while (commandOperations.KeepProcess);
 
             Console.ReadKey();
         }

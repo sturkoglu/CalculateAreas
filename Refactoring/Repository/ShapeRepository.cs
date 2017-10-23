@@ -8,7 +8,7 @@ namespace Refactoring.Repository
     public interface IShapeRepository
     {
         void CalculateSurfaceAreas();
-        void Add(Shape shape);
+        void Add(IShape shape);
         void Clear();
         void Print();
 
@@ -17,17 +17,17 @@ namespace Refactoring.Repository
     public class ShapeRepository : IShapeRepository
     {
         private readonly ILogger logger;
-        public List<Shape> shapeList { get; set; }
+        public List<IShape> shapeList { get; set; }
         public List<double> surfaceAreaList { get; private set; }
 
-        public ShapeRepository()
+        public ShapeRepository(ILogger logger)
         {
-            logger = new Logger();
-            shapeList = new List<Shape>();
+            this.logger = logger;
+            shapeList = new List<IShape>();
             surfaceAreaList = new List<double>();
         }
 
-        public void Add(Shape shape)
+        public void Add(IShape shape)
         {
             shapeList.Add(shape);
         }

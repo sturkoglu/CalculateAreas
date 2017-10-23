@@ -1,7 +1,9 @@
 ﻿namespace Refactoring.Domain
 {
-    public class Square : Shape
+    public class Square : IShape
     {
+        public string Name { get; set; }
+        public double Area { get; set; }
         private double Side { get; set; }
 
         public Square(double side)
@@ -10,7 +12,7 @@
             Side = side;
         }
 
-        public override double CalculateSurfaceArea()
+        public double CalculateSurfaceArea()
         {
             Area = Side * Side;
             return Area;

@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Refactoring.Domain;
 using Refactoring.Repository;
 
@@ -9,19 +9,29 @@ namespace Refactoring.UnitTest.Repository
     [TestClass]
     public class RepositoryUnitTests
     {
+        private readonly Mock<ILogger> mockLogger = new Mock<ILogger>();
+
+        private Triangle triangle;
+        private Circle circle;
+        private ShapeRepository shapeRepository;
+
         private const double TriangleHeight = 13d;
         private const double TriangleWidth = 34d;
         private const double CircleRadius = 23d;
 
+        [TestInitialize]
+        public void Setup()
+        {
+            // Arrange
+            triangle = new Triangle(TriangleHeight, TriangleWidth);
+            circle = new Circle(CircleRadius);
+
+            shapeRepository = new ShapeRepository(mockLogger.Object);
+        }
+
         [TestMethod]
         public void ShapeRepositoryShouldHaveTwoShapes()
         {
-            // Arrange
-            var triangle = new Triangle(TriangleHeight, TriangleWidth);
-            var circle = new Circle(CircleRadius);
-
-            var shapeRepository = new ShapeRepository();
-
             // Act
             shapeRepository.Add(triangle);
             shapeRepository.Add(circle);
@@ -33,12 +43,6 @@ namespace Refactoring.UnitTest.Repository
         [TestMethod]
         public void ShapeRepositoryShouldHaveTwoCalculatedAreas()
         {
-            // Arrange
-            var triangle = new Triangle(TriangleHeight, TriangleWidth);
-            var circle = new Circle(CircleRadius);
-
-            var shapeRepository = new ShapeRepository();
-
             // Act
             shapeRepository.Add(triangle);
             shapeRepository.Add(circle);
@@ -51,12 +55,6 @@ namespace Refactoring.UnitTest.Repository
         [TestMethod]
         public void ShapeRepositoryShouldNotHaveAnyShapeAfterReset()
         {
-            // Arrange
-            var triangle = new Triangle(TriangleHeight, TriangleWidth);
-            var circle = new Circle(CircleRadius);
-
-            var shapeRepository = new ShapeRepository();
-
             // Act
             shapeRepository.Add(triangle);
             shapeRepository.Add(circle);
@@ -69,12 +67,6 @@ namespace Refactoring.UnitTest.Repository
         [TestMethod]
         public void ShapeRepositoryShouldNotHaveAnyCalculatedAreaAfterReset()
         {
-            // Arrange
-            var triangle = new Triangle(TriangleHeight, TriangleWidth);
-            var circle = new Circle(CircleRadius);
-
-            var shapeRepository = new ShapeRepository();
-
             // Act
             shapeRepository.Add(triangle);
             shapeRepository.Add(circle);
@@ -89,9 +81,6 @@ namespace Refactoring.UnitTest.Repository
         [ExpectedException(typeof(Exception), "There are no surface areas to print")]
         public void ShapeRepositoryShouldThrowExceptionPrint()
         {
-            // Arrange
-            var shapeRepository = new ShapeRepository();
-
             // Act
             shapeRepository.Print();
 
@@ -102,9 +91,6 @@ namespace Refactoring.UnitTest.Repository
         [ExpectedException(typeof(Exception), "There are no surface areas to calculate")]
         public void ShapeRepositoryShouldThrowExceptionForCalculate()
         {
-            // Arrange
-            var shapeRepository = new ShapeRepository();
-
             // Act
             shapeRepository.CalculateSurfaceAreas();
 

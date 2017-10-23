@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Refactoring.Domain;
 using Refactoring.Repository;
 
@@ -8,6 +9,8 @@ namespace Refactoring.UnitTest.Domain
     [TestClass]
     public class UnitTest
     {
+        private readonly Mock<ILogger> mockLogger = new Mock<ILogger>();
+
         private const double TriangleHeight = 13d;
         private const double TriangleWidth = 34d;
         private const double TriangleSurfaceArea = 221d;
@@ -105,7 +108,7 @@ namespace Refactoring.UnitTest.Domain
             var expectedSurfaceAreas = new List<double>() { TriangleSurfaceArea, CircleSurfaceArea, SquareSurfaceArea, RectangleSurfaceArea, TrapezoidSurfaceArea };
 
             // Act
-            var surfaceAreaCalculator = new ShapeRepository();
+            var surfaceAreaCalculator = new ShapeRepository(mockLogger.Object);
             surfaceAreaCalculator.Add(triangle);
             surfaceAreaCalculator.Add(circle);
             surfaceAreaCalculator.Add(square);

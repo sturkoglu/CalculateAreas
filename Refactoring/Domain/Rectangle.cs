@@ -1,7 +1,9 @@
 ﻿namespace Refactoring.Domain
 {
-    public class Rectangle : Shape
+    public class Rectangle : IShape
     {
+        public string Name { get; set; }
+        public double Area { get; set; }
         private double Height { get; set; }
         private double Width { get; set; }
 
@@ -12,7 +14,7 @@
             Width = width;
         }
 
-        public override double CalculateSurfaceArea()
+        public double CalculateSurfaceArea()
         {
             Area = Height * Width;
             return Area;

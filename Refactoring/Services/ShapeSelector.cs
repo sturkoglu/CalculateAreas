@@ -6,16 +6,16 @@ namespace Refactoring.Services
 {
     public interface ISelector
     {
-        Shape Get(List<string> arrCommands);
+        IShape Get(List<string> arrCommands);
     }
 
     public class ShapeSelector : ISelector
     {
-        private readonly IDictionary<ShapeTypes, Func<List<string>, Shape>> commandShapeDict;
+        private readonly IDictionary<ShapeTypes, Func<List<string>, IShape>> commandShapeDict;
 
         public ShapeSelector()
         {
-            commandShapeDict = new Dictionary<ShapeTypes, Func<List<string>, Shape>>
+            commandShapeDict = new Dictionary<ShapeTypes, Func<List<string>, IShape>>
             {
                 {ShapeTypes.square, GetSquare},
                 {ShapeTypes.circle, GetCircle},
@@ -25,7 +25,7 @@ namespace Refactoring.Services
             };
         }
 
-        public Shape Get(List<string> arrCommands)
+        public IShape Get(List<string> arrCommands)
         {
             ShapeTypes shapeInput;
 

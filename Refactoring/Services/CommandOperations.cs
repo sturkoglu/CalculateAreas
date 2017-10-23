@@ -5,23 +5,34 @@ using Refactoring.Repository;
 
 namespace Refactoring.Services
 {
-    public class CommandOperations
+    public interface ICommandOperations
+    {
+        bool KeepProcess { get; set; }
+        void ReadString(string pCommand);
+        void ShowCommands();
+    }
+
+
+    public class CommandOperations : ICommandOperations
     {
         private readonly IShapeRepository shapeRepository;
         private readonly ISelector shapeSelector;
         private readonly ILogger logger;
 
-        public bool keepProcess;
+        public bool KeepProcess { get; set; }
 
         private readonly IDictionary<OperationTypes, Action<List<string>>> commandDict;
 
-        public CommandOperations()
+        public CommandOperations(
+            IShapeRepository shapeRepository,
+            ISelector shapeSelector,
+            ILogger logger)
         {
-            shapeRepository = new ShapeRepository();
-            shapeSelector = new ShapeSelector();
-            logger = new Logger();
+            this.shapeRepository = shapeRepository;
+            this.shapeSelector = shapeSelector;
+            this.logger = logger;
 
-            keepProcess = true;
+            KeepProcess = true;
 
             commandDict = new Dictionary<OperationTypes, Action<List<string>>>
             {
@@ -32,6 +43,7 @@ namespace Refactoring.Services
                 {OperationTypes.exit, Exit}
             };
         }
+
 
         public void ReadString(string pCommand)
         {
@@ -51,7 +63,7 @@ namespace Refactoring.Services
             
         }
 
-        private void Create(List<string> arrCommands)
+        public void Create(List<string> arrCommands)
         {
             try
             {
@@ -66,7 +78,7 @@ namespace Refactoring.Services
             }
         }
 
-        private void Calculate(List<string> arrCommands)
+        public void Calculate(List<string> arrCommands)
         {
             try
             {
@@ -78,7 +90,7 @@ namespace Refactoring.Services
             }
         }
 
-        private void Print(List<string> arrCommands)
+        public void Print(List<string> arrCommands)
         {
             try
             {
@@ -90,15 +102,15 @@ namespace Refactoring.Services
             }
         }
 
-        private void Reset(List<string> arrCommands)
+        public void Reset(List<string> arrCommands)
         {
             shapeRepository.Clear();
             logger.Log("Reset state!!");
         }
 
-        private void Exit(List<string> arrCommands)
+        public void Exit(List<string> arrCommands)
         {
-            keepProcess = false;
+            KeepProcess = false;
         }
 
         public void ShowCommands()

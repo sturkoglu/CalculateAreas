@@ -2,8 +2,10 @@
 
 namespace Refactoring.Domain
 {
-    public class Circle : Shape
+    public class Circle : IShape
     {
+        public string Name { get; set; }
+        public double Area { get; set; }
         private double Radius { get; set; }
 
         public Circle(double radius)
@@ -12,7 +14,7 @@ namespace Refactoring.Domain
             Radius = radius;
         }
 
-        public override double CalculateSurfaceArea()
+        public double CalculateSurfaceArea()
         {
             Area = Math.Round(Math.PI * (Radius * Radius), 2);
             return Area;

@@ -1,13 +1,13 @@
 ﻿namespace Refactoring.Domain
 {
-    public abstract class Shape
+    public interface IShape
     {
-        public string Name;
-        public double Area;
-        public abstract double CalculateSurfaceArea();
+        string Name { get; set; }
+        double Area { get; set; }
+        double CalculateSurfaceArea();
     }
 
-    enum ShapeTypes
+    public enum ShapeTypes
     {
         square,
         circle,
